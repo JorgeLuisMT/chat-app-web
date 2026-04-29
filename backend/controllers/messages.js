@@ -7,10 +7,20 @@ export class Messages {
 
   create = async (req, res) => {
     let validation = validateMessage(req.body);
+    let { user_id } = req.user;
+    let { chat_id } = req.params;
     if (!validation.success) {
       return res.status(400).json({ message: validation.error });
     }
-    let result = await this.model.create(validation.data);
+    let result = await this.model.create({
+      message: validation.data.message,
+      user_id,
+      chat_id,
+    });
+
+    if (result.error) {
+      return res.status(400).json({ result });
+    }
     return res.status(201).json(result);
   };
 

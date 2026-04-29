@@ -5,7 +5,7 @@ export const ChatParticipantsRouter = (model) => {
   const chatParticipantsRouter = Router();
   const chatParticipantsController = new ChatParticipants(model);
 
-  chatParticipantsRouter.post("/", chatParticipantsController.create);
+  chatParticipantsRouter.post("/:chat_id", chatParticipantsController.create);
   chatParticipantsRouter.get("/", chatParticipantsController.get);
 
   return chatParticipantsRouter;

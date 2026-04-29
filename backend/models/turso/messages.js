@@ -2,9 +2,8 @@ import { connection } from "./users.js";
 import { randomUUID } from "node:crypto";
 
 export class Messages {
-  static async create(data) {
+  static async create({ message, user_id, chat_id }) {
     try {
-      let { message, user_id, chat_id } = data;
       let message_id = randomUUID();
       let result = connection.execute({
         sql: `INSERT INTO messages(message_id, message, user_id, chat_id) VALUES (?,?,?,?)`,
@@ -12,7 +11,7 @@ export class Messages {
       });
       return result;
     } catch (error) {
-      console.log(error);
+      return { error: error.message };
     }
   }
 

@@ -2,6 +2,7 @@ import * as z from "zod";
 
 const userIDValidations = z.object({
   users: z.uuid().array(),
+  user: z.uuid(),
 });
 
 const friendshipValidations = z.object({
@@ -11,4 +12,5 @@ const friendshipValidations = z.object({
 
 export const ValidateFriendship = (id) => friendshipValidations.safeParse(id);
 
-export const ValidateUserID = (data) => userIDValidations.safeParse(data);
+export const ValidateUserID = (data) =>
+  userIDValidations.partial().safeParse(data);

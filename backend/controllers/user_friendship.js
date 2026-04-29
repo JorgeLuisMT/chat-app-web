@@ -7,11 +7,15 @@ export class UserFriendship {
 
   create = async (req, res) => {
     let validation = ValidateUserID(req.body);
-    let { user_id } = req.user_id;
+    let { user_id } = req.user;
     if (!validation.success) {
       return res.status(400).json({ message: "Invalid user" });
     }
-    let result = await this.model.create(user_id, validation.data);
+    let { user: receiver_id } = validation.data;
+    let result = await this.model.create({ user_id, receiver_id });
+    if (result.error) {
+      return res.status(400).json(result);
+    }
     return res.status(201).json(result);
   };
 

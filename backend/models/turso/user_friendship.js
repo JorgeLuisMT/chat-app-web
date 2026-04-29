@@ -2,20 +2,26 @@ import { connection } from "./users.js";
 import { randomUUID } from "node:crypto";
 
 export class UserFriendship {
-  static async create(requester_id, receiver_id) {
+  static async create({ user_id: requester_id, receiver_id }) {
     try {
+      let duplicates = await connection.execute({
+        sql: `SELECT 1 FROM user_friendship WHERE (requester_id = ? AND receiver_id = ?) OR (receiver_id = ? AND requester_id = ?)`,
+        args: [requester_id, receiver_id, requester_id, receiver_id],
+      });
+      if (duplicates.rows.length > 0)
+        throw { message: "No duplicates allowed" };
       let id = randomUUID();
       let result = connection.execute({
-        sql: `INSERT INTO user_friendship(id, requester_id, receiver_id, status) VALUES (?, ?, ?, "pending")`,
-        args: [id, requester_id, receiver_id],
+        sql: `INSERT INTO user_friendship(id, requester_id, receiver_id, status) VALUES (?, ?, ?, ?)`,
+        args: [id, requester_id, receiver_id, "pending"],
       });
       return result;
     } catch (error) {
-      console.log(error);
+      return { error: error.message };
     }
   }
 
-  static async getFriends(id) {
+  static async getFriends(user_id) {
     try {
       let result = await connection.execute({
         sql: `
@@ -27,7 +33,7 @@ export class UserFriendship {
                 WHERE (requester_id = ? OR receiver_id = ?)
                 AND status = 'accepted'
             `,
-        args: [id, id, id],
+        args: [user_id, user_id, user_id],
       });
       return result;
     } catch (error) {

@@ -1,7 +1,7 @@
 import { connection } from "./users.js";
 
 export class ChatParticipants {
-  static async create(chat_id, user_id = null, users) {
+  static async create(chat_id, user_id = null, { users }) {
     let result;
 
     const insertIntoChat = async (users) => {
@@ -30,9 +30,9 @@ export class ChatParticipants {
           throw { message: "Invalid credentials" };
         insertIntoChat(users);
       }
-      return result;
+      return { chat_id, user_id, users };
     } catch (error) {
-      console.log(error);
+      return { error: error.message };
     }
   }
 

@@ -6,6 +6,8 @@ export const AuthRouter = (model) => {
   const authController = new Auth(model);
 
   authRouter.post("/login", authController.login);
+  authRouter.post("/register", authController.register);
+  authRouter.post("/logout", authController.logout);
 
   return authRouter;
 };

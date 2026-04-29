@@ -14,6 +14,10 @@ export class ChatParticipants {
       return res.status(400).json({ message: "Invalid user" });
     }
     let result = await this.model.create(chat_id, user_id, validation.data);
+
+    if (result.hasOwnProperty("error")) {
+      return res.status(403).json(result);
+    }
     return res.status(200).json(result);
   };
 

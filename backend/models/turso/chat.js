@@ -2,7 +2,7 @@ import { connection } from "./users.js";
 import { randomUUID } from "node:crypto";
 
 export class Chat {
-  static async create(chat_name) {
+  static async create({ chat_name }) {
     try {
       let id = randomUUID();
       let result = connection.execute({

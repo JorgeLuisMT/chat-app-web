@@ -1,4 +1,5 @@
 import { connection } from "./users.js";
+import { randomUUID } from "node:crypto";
 import bcrypt from "bcrypt";
 
 export class Auth {
@@ -22,9 +23,29 @@ export class Auth {
 
       return { user_name, user_id };
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
     }
   }
 
-  static async logout() {}
+  static async register({ user_name, user_email, user_password }) {
+    try {
+      let user_id = randomUUID();
+      let cryptedPassword = await bcrypt.hash(user_password, 10);
+
+      let result = await connection.execute({
+        sql: `INSERT INTO users(
+            user_id,
+            user_name,
+            user_email,
+            user_password,
+            created_at
+          ) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        args: [user_id, user_name, user_email, cryptedPassword],
+      });
+
+      return { user_id, user_name };
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
 }

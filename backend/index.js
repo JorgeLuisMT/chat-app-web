@@ -28,28 +28,43 @@ export const createApp = (models) => {
     let token = req.cookies.access_token;
     let decode = null;
 
-    req.user = { user_id: null, user_name: null };
+    //req.user = { user_id: null, user_name: null };
+    req.user = null;
     try {
       decode = jwt.verify(token, process.env.SECRET_WORD);
-      req.user.user_id = decode.user_id;
+
+      req.user = { user_id: decode.user_id };
     } catch (error) {
-      req.user.user_id = null;
+      req.user = null;
+      console.log(error.message);
     }
 
     next();
   });
+
+  const requireAuth = (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "unauthorized" });
+    }
+    next();
+  };
   app.get("/", (req, res) => {
     console.log(req.user.user_id);
     res.send({ ok: true });
   });
 
   app.use("/", AuthRouter(models.auth));
-  app.use("/users", createRouter(models.users));
-  app.use("/messages", MessagesRouter(models.messages));
-  app.use("/friendship", UserFriendshipRouter(models.user_friendship));
-  app.use("/chat", ChatRouter(models.chat));
+  app.use("/users", requireAuth, createRouter(models.users));
+  app.use(requireAuth, MessagesRouter(models.messages));
+  app.use(
+    "/friendship",
+    requireAuth,
+    UserFriendshipRouter(models.user_friendship),
+  );
+  app.use("/chat", requireAuth, ChatRouter(models.chat));
   app.use(
     "/chat_participants",
+    requireAuth,
     ChatParticipantsRouter(models.chat_participants),
   );
 
