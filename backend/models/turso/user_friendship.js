@@ -21,23 +21,45 @@ export class UserFriendship {
     }
   }
 
-  static async getFriends(user_id) {
+  static async getFriends({ user_id }) {
     try {
-      let result = await connection.execute({
+      let friends = await connection.execute({
         sql: `
-                SELECT 
-                    CASE WHERE requester_id = ? THEN receiver_id
-                    ELSE requester_id
-                END AS friend_id
-                FROM friendship_users
-                WHERE (requester_id = ? OR receiver_id = ?)
-                AND status = 'accepted'
+                SELECT u.user_name
+                FROM user_friendship f
+                JOIN users u
+                  ON u.user_id = CASE
+                    WHEN f.requester_id = ? THEN f.receiver_id
+                    ELSE f.requester_id
+                  END
+                WHERE (f.requester_id = ? OR f.receiver_id = ?)
+               AND f.status = 'accepted'
             `,
         args: [user_id, user_id, user_id],
       });
+      if (friends.rows.length === 0) throw { message: "User has no friends" };
+      return friends.rows;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+
+  static async acceptFriend({ user_id, friendship_id: id }) {
+    try {
+      let isReceiver = await connection.execute({
+        sql: `SELECT 1 FROM user_friendship WHERE receiver_id = ? AND id = ?`,
+        args: [user_id, id],
+      });
+      if (isReceiver.rows.length === 0)
+        throw { message: "Invalid credentials" };
+
+      let result = await connection.execute({
+        sql: `UPDATE user_friendship SET status = 'accepted' WHERE id = ?`,
+        args: [id],
+      });
       return result;
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
     }
   }
 

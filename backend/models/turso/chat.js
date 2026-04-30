@@ -11,7 +11,7 @@ export class Chat {
       });
       return result;
     } catch (error) {
-      console.log(error);
+      return { error: error.message };
     }
   }
 
@@ -28,9 +28,10 @@ export class Chat {
         sql: `SELECT chat_name FROM chat WHERE chat_id = ?`,
         args: [chat_id],
       });
-      return result;
+
+      return result.rows[0];
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
     }
   }
 }

@@ -10,39 +10,40 @@ export const connection = createClient({
 });
 
 export class Users {
-  static async create(user) {
+  static async getPrivateUser(id) {
     try {
-      let { user_name, user_email, user_password } = user;
-
-      let id = randomUUID();
-      let cryptedPassword = await bcrypt.hash(user_password, 10);
-
-      let result = await connection.execute({
-        sql: `INSERT INTO users(
-        user_id,
-        user_name,
-        user_email,
-        user_password,
-        created_at
-      ) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)`,
-        args: [id, user_name, user_email, cryptedPassword],
-      });
-
-      return { ...user, id };
-    } catch (e) {
-      console.error("DB ERROR:", e.message);
-    }
-  }
-
-  static async get(id) {
-    try {
-      let result = await connection.execute({
+      let getUser = await connection.execute({
         sql: `SELECT user_name, user_email FROM users WHERE user_id = ?`,
         args: [id],
       });
-      return result;
+      if (getUser.rows.length === 0) throw { message: "User not found" };
+
+      return {
+        user_name: getUser.rows[0].user_name,
+        user_email: getUser.rows[0].user_email,
+      };
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
+    }
+  }
+
+  static async getPublicUser({ user_id = null, user_name = null }) {
+    try {
+      let getUser;
+
+      getUser = await connection.execute({
+        sql: `SELECT user_name, user_id FROM users WHERE user_id = ? OR user_name = ?`,
+        args: [user_id || "", user_name || ""],
+      });
+
+      if (getUser.rows.length === 0) throw { message: "User not Found" };
+
+      return {
+        user_name: getUser.rows[0].user_name,
+        user_id: getUser.rows[0].user_id,
+      };
+    } catch (error) {
+      return { error: error.message };
     }
   }
 }

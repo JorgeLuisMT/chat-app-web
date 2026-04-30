@@ -27,7 +27,10 @@ export class Messages {
   get = async (req, res) => {
     let { chat_id } = req.params;
     let { user_id } = req.user;
-    let result = await this.model.get(chat_id, user_id);
+    let result = await this.model.get({ chat_id, user_id });
+    if (result.error) {
+      return res.status(403).json(result);
+    }
     return res.status(200).json(result);
   };
 }

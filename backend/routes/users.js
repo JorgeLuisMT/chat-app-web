@@ -4,8 +4,8 @@ import { Users } from "../controllers/users.js";
 export const createRouter = (model) => {
   const usersController = new Users(model);
   const usersRouter = Router();
-  usersRouter.post("/", usersController.create);
-  usersRouter.get("/", usersController.get);
+  usersRouter.get("/", usersController.getPrivateUser);
+  usersRouter.get("/public", usersController.getPublicUser);
 
   return usersRouter;
 };

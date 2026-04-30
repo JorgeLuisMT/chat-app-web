@@ -36,7 +36,7 @@ export class ChatParticipants {
     }
   }
 
-  static async get(user_id) {
+  static async get({ user_id }) {
     try {
       /* let validation = await connection.execute({
         sql: `SELECT 1 FROM chat_participants WHERE chat_id = ? AND user_id = ?`,
@@ -44,13 +44,15 @@ export class ChatParticipants {
       });
       if (validation.rows.length === 0)
         throw { message: "Invalid credentials" }; */
-      let result = await connection.execute({
+      let getChats = await connection.execute({
         sql: `SELECT * FROM chat_participants WHERE user_id = ?`,
         args: [user_id],
       });
-      return result;
+      if (getChats.rows.length === 0) throw { message: "User has no chats" };
+
+      return getChats.rows;
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
     }
   }
 }

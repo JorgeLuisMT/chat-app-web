@@ -15,7 +15,7 @@ export class Messages {
     }
   }
 
-  static async get(chat_id, user_id) {
+  static async get({ chat_id, user_id }) {
     try {
       let validation = await connection.execute({
         sql: `SELECT 1 FROM chat_participants WHERE chat_id = ? AND user_id = ?`,
@@ -24,13 +24,14 @@ export class Messages {
       if (validation.rows.length === 0)
         throw { message: "Invalid credentials" };
 
-      let result = await connection.execute({
+      let getMessages = await connection.execute({
         sql: `SELECT * FROM messages WHERE chat_id = ?`,
         args: [chat_id],
       });
-      return result;
+
+      return getMessages.rows;
     } catch (error) {
-      console.log(error.message);
+      return { error: error.message };
     }
   }
 }

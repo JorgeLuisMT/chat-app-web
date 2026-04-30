@@ -7,6 +7,10 @@ export const UserFriendshipRouter = (model) => {
 
   userFriendship.post("/", userFriendshipController.create);
   userFriendship.get("/", userFriendshipController.getFriends);
+  userFriendship.put(
+    "/accept/:friendship_id",
+    userFriendshipController.acceptFriend,
+  );
   userFriendship.put("/", userFriendshipController.update);
 
   return userFriendship;

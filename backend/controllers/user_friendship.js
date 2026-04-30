@@ -16,13 +16,26 @@ export class UserFriendship {
     if (result.error) {
       return res.status(400).json(result);
     }
-    return res.status(201).json(result);
+    res.status(201).json(result);
   };
 
   getFriends = async (req, res) => {
     let { user_id } = req.user;
-    let result = await this.model.getFriends(user_id);
-    return res.status(200).json(result);
+    let result = await this.model.getFriends({ user_id });
+    if (result.error) {
+      return res.status(403).json(result);
+    }
+    res.status(200).json(result);
+  };
+
+  acceptFriend = async (req, res) => {
+    let { user_id } = req.user;
+    let { friendship_id } = req.params;
+    let result = await this.model.acceptFriend({ user_id, friendship_id });
+    if (result.error) {
+      return res.status(403).json(result);
+    }
+    res.status(204).json(result);
   };
 
   update = async (req, res) => {
@@ -33,6 +46,6 @@ export class UserFriendship {
       return res.status(400).json({ message: validation.error });
     }
     let result = await this.model.update(user_id, id, status);
-    return res.status(201).json(result);
+    res.status(201).json(result);
   };
 }

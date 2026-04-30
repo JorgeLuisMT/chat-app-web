@@ -24,7 +24,10 @@ export class ChatParticipants {
   get = async (req, res) => {
     // let { chat_id } = req.params;
     let { user_id } = req.user;
-    let result = await this.model.get(user_id);
-    return res.status(200).json(result);
+    let result = await this.model.get({ user_id });
+    if (result.error) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
   };
 }

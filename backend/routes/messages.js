@@ -6,7 +6,7 @@ export const MessagesRouter = (model) => {
   const messagesController = new Messages(model);
 
   messagesRouter.post("/chat/:chat_id/messages", messagesController.create);
-  messagesRouter.get("/", messagesController.get);
+  messagesRouter.get("/chat/:chat_id/messages", messagesController.get);
 
   return messagesRouter;
 };
