@@ -10,6 +10,9 @@ import { AuthRouter } from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { fileURLToPath } from "node:url";
+import { join, dirname } from "node:path";
+import { handleChatConnection } from "./sockets/chat.js";
 
 export const createApp = (models) => {
   const app = express();
@@ -20,26 +23,52 @@ export const createApp = (models) => {
   dotenv.config();
   const PORT = process.env.PORT ?? 1234;
 
+  const _dirname = dirname(fileURLToPath(import.meta.url));
+
   app.use(express.json());
 
   app.use(cookieParser());
+
+  app.get("/", (req, res) => {
+    res.sendFile(join(_dirname, "index.html"));
+  });
+
+  app.use("/auth", AuthRouter(models.auth));
 
   app.use((req, res, next) => {
     let token = req.cookies.access_token;
     let decode = null;
 
-    //req.user = { user_id: null, user_name: null };
     req.user = null;
     try {
       decode = jwt.verify(token, process.env.SECRET_WORD);
 
       req.user = { user_id: decode.user_id };
+      next();
     } catch (error) {
-      req.user = null;
       console.log(error.message);
     }
+  });
 
-    next();
+  io.use((socket, next) => {
+    const cookies = socket.handshake.headers.cookie || "";
+    let decode = null;
+
+    const parsed = Object.fromEntries(
+      cookies.split("; ").map((c) => c.split("=")),
+    );
+
+    let token = parsed.access_token;
+
+    socket.user = null;
+    try {
+      decode = jwt.verify(token, process.env.SECRET_WORD);
+      socket.user = { user_id: decode.user_id };
+      next();
+    } catch (error) {
+      socket.user = null;
+      //console.log(error.message);
+    }
   });
 
   const requireAuth = (req, res, next) => {
@@ -48,12 +77,7 @@ export const createApp = (models) => {
     }
     next();
   };
-  app.get("/", (req, res) => {
-    console.log(req.user.user_id);
-    res.send({ ok: true });
-  });
 
-  app.use("/", AuthRouter(models.auth));
   app.use("/users", requireAuth, createRouter(models.users));
   app.use(requireAuth, MessagesRouter(models.messages));
   app.use(
@@ -68,15 +92,9 @@ export const createApp = (models) => {
     ChatParticipantsRouter(models.chat_participants),
   );
 
-  io.on("connection", (socket) => {
-    console.log("a user has connected");
-    socket.on("chat message", (msg) => {
-      io.emit("chat message", msg, serverOffset);
-    });
-    socket.on("disconnect", () => {
-      console.log("a user has disconnected");
-    });
-  });
+  app.set("io", io);
+
+  handleChatConnection(io);
 
   server.listen(PORT, () => {
     console.log(`Your server is ready on http://localhost:${PORT}`);

@@ -78,7 +78,7 @@ export class UserFriendship {
       });
       return result;
     } catch (error) {
-      console.log(error);
+      return { error: error.message };
     }
   }
 }
