@@ -30,7 +30,7 @@ export const createApp = (models) => {
   app.use(cookieParser());
 
   app.get("/", (req, res) => {
-    res.sendFile(join(_dirname, "index.html"));
+    res.status(200).sendFile(join(_dirname, "index.html"));
   });
 
   app.use("/auth", AuthRouter(models.auth));
@@ -39,15 +39,19 @@ export const createApp = (models) => {
     let token = req.cookies.access_token;
     let decode = null;
 
+    if (!token) return next();
+
     req.user = null;
+
     try {
       decode = jwt.verify(token, process.env.SECRET_WORD);
 
       req.user = { user_id: decode.user_id };
-      next();
     } catch (error) {
+      console.log("soy error de request middleware");
       console.log(error.message);
     }
+    next();
   });
 
   io.use((socket, next) => {
@@ -67,7 +71,8 @@ export const createApp = (models) => {
       next();
     } catch (error) {
       socket.user = null;
-      //console.log(error.message);
+      console.log("soy error de socket middleware");
+      console.log(error.message);
     }
   });
 

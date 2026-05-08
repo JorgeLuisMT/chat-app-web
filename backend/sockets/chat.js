@@ -7,9 +7,15 @@ export const handleChatConnection = (io) => {
     let { chat_id } = socket.handshake.auth;
     let { user_id } = socket.user;
 
-    socket.on("join chat", (chat_id) => {
-      socket.join(chat_id);
-      io.to(chat_id).emit("hello", "world");
+    console.log(user_id, chat_id);
+
+    socket.on("join room", (chatId) => {
+      socket.join(`chat_${chatId}`);
+    });
+
+    socket.on("chat message", ({ chatId, msg }) => {
+      console.log(msg);
+      io.to(`chat_${chatId}`).emit("chat message", { msg });
     });
 
     socket.on("disconnect", () => {
@@ -26,7 +32,7 @@ export const handleChatConnection = (io) => {
         if (getLostMessages.error) throw error;
 
         for (let i = 0; i < getLostMessages.rows.length; i++) {
-          io.emit(
+          scoket.emit(
             "chat message",
             getLostMessages.rows[i].message,
             getLostMessages.rows[i].created_at,

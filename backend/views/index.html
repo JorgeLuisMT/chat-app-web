@@ -29,6 +29,15 @@
         gap: 1rem;
         border: thin solid black;
       }
+
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #chat-form {
+        display: flex;
+      }
     </style>
     <title>Document</title>
   </head>
@@ -43,6 +52,13 @@
           <input type="submit" value="Login" name="submit" />
         </form>
       </div>
+      <div class="chat-container">
+        <ul id="messages-container"></ul>
+        <form id="chat-form">
+          <input type="text" name="chatInput" />
+          <input type="submit" value="Send" />
+        </form>
+      </div>
       <div class="register-container">
         <form id="register-form">
           <label for="register-username">Username: </label>
@@ -55,14 +71,20 @@
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io();
       const $LoginForm = document.getElementById("login-form");
-
-      console.log(Object.fromEntries(new FormData($LoginForm)));
+      const $chatForm = document.getElementById("chat-form");
+      const $main = document.querySelector("main");
+      let socket = io({
+        auth: {
+          serverOffset: 0,
+          chat_id: "7f882d59-1ef4-4b0a-aeb4-4bd447e11a0a",
+        },
+      });
+      let login = false;
 
       $LoginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const login = await fetch("http://localhost:1234/auth/login", {
+        const res = await fetch("http://localhost:1234/auth/login", {
           method: "POST",
           body: JSON.stringify({
             user_name: $LoginForm.username.value,
@@ -72,8 +94,49 @@
             "Content-Type": "application/json",
           },
         });
-        const res = await login.json();
-        console.log(res);
+        const data = await res.json();
+
+        if (data.error) {
+          console.log(data);
+          return;
+        }
+
+        login = true;
+      });
+
+      $chatForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        let res = await fetch(
+          "http://localhost:1234/chat/7f882d59-1ef4-4b0a-aeb4-4bd447e11a0a/messages",
+          {
+            method: "POST",
+            body: JSON.stringify({ message: $chatForm.chatInput.value }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        let message = await res.json();
+
+        if (message.error) {
+          console.log(message);
+          return;
+        }
+
+        socket.emit("join room", "7f882d59-1ef4-4b0a-aeb4-4bd447e11a0a");
+
+        socket.emit("chat message", {
+          chatId: "7f882d59-1ef4-4b0a-aeb4-4bd447e11a0a",
+          msg: $chatForm.chatInput.value,
+        });
+      });
+
+      socket.on("chat message", ({ msg }) => {
+        console.log(msg);
+        let $li = document.createElement("li");
+        $li.textContent = msg;
+        document.getElementById("messages-container").appendChild($li);
       });
     </script>
   </body>

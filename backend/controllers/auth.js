@@ -19,7 +19,7 @@ export class Auth {
     let result = await this.model.login(validation.data);
 
     if (result.hasOwnProperty("error")) {
-      return res.status(401).json({ message: "Invalid User" });
+      return res.status(401).json({ error: "Invalid User" });
     }
 
     let token = jwt.sign(result, process.env.SECRET_WORD, { expiresIn: "1h" });

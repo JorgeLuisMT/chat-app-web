@@ -9,8 +9,11 @@ export class MessageService {
       if (isUserAllowed.error) throw isUserAllowed.error;
 
       let getLostMessages = await connection.execute({
-        sql: `SELECT * FROM messages WHERE created_at > ? ORDER BY created_at ASC`,
-        args: [socket.handshake.auth.serverOffset || "1970-01-01 00:00:00"],
+        sql: `SELECT * FROM messages WHERE created_at > ? AND chat_id = ? ORDER BY created_at ASC`,
+        args: [
+          socket.handshake.auth.serverOffset || "1970-01-01 00:00:00",
+          chat_id,
+        ],
       });
 
       return getLostMessages;
