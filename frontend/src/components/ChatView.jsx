@@ -1,19 +1,14 @@
-import React, { useState } from "react";
 import ChatHeader from "./ChatHeader";
-import ChatMenu from "./ChatMenu";
 import "../styles/ChatView.css";
+import ChatBody from "./ChatBody";
+import ChatFooter from "./ChatFooter";
 
 const ChatView = () => {
-  const [isChatMenuOpen, setIsChatMenuOpen] = useState(false);
-
-  const handleClickChatMenu = () => setIsChatMenuOpen(!isChatMenuOpen);
   return (
     <div className="chat-view-container">
-      <ChatHeader handleClickChatMenu={handleClickChatMenu} />
-      <ChatMenu
-        isChatMenuOpen={isChatMenuOpen}
-        handleClickChatMenu={handleClickChatMenu}
-      />
+      <ChatHeader />
+      <ChatBody />
+      <ChatFooter />
     </div>
   );
 };

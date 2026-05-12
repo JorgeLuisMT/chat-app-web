@@ -5,6 +5,7 @@ const useForm = (initForm, validateForm) => {
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
+    console.log(e.target.value);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -14,6 +15,7 @@ const useForm = (initForm, validateForm) => {
 
   return {
     form,
+    setForm,
     error,
     handleChange,
     handleBlur,

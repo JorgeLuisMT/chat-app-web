@@ -1,15 +1,31 @@
 import React from "react";
 
-function GeneralOptionsHeader() {
+function GeneralOptionsHeader({ handleChange, form }) {
   return (
-    <div className="options-header-container">
-      <form id="general-options-form">
-        <label htmlFor="chats">Chats</label>
-        <input type="radio" id="chats" name="chats" />
+    <form className="options-header-container">
+      <div>
+        <input
+          type="radio"
+          id="chat"
+          name="options-header-radio"
+          checked={form["options-header-radio"] === "chat"}
+          value="chat"
+          onChange={handleChange}
+        />
+        <label htmlFor="chat">Chats</label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          id="friends"
+          name="options-header-radio"
+          checked={form["options-header-radio"] === "friends"}
+          value="friends"
+          onChange={handleChange}
+        />
         <label htmlFor="friends">Friends</label>
-        <input type="radio" id="friends" name="friends" />
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
 

@@ -4,8 +4,8 @@ import React from "react";
 
 const MenuButton = ({ handleClickMenu }) => {
   return (
-    <div onClick={handleClickMenu}>
-      <FontAwesomeIcon icon={faBars} style={{ fontSize: "50px" }} />
+    <div onClick={handleClickMenu} className="menu-button-container">
+      <FontAwesomeIcon icon={faBars} style={{ fontSize: "25px" }} />
     </div>
   );
 };

@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import GeneralHeader from "./GeneralHeader";
-import Menu from "./Menu";
+import useForm from "../hooks/useForm.jsx";
 import "../styles/GeneralView.css";
+import GeneralBody from "./GeneralBody.jsx";
+
+const initForm = {
+  "options-header-radio": "chat",
+  "search-chats": "",
+  "search-friends": "",
+};
 
 const GeneralView = () => {
-  const [isGeneralMenuOpen, setIsGeneralMenuOpen] = useState(false);
-  const handleClickGeneralMenu = () => setIsGeneralMenuOpen(!isGeneralMenuOpen);
+  const { form, setForm, handleChange } = useForm(initForm);
   return (
     <div className="general-view-container">
-      <GeneralHeader handleClickGeneralMenu={handleClickGeneralMenu} />
-      <Menu
-        isGeneralMenuOpen={isGeneralMenuOpen}
-        handleClickGeneralMenu={handleClickGeneralMenu}
-      />
+      <GeneralHeader handleChange={handleChange} form={form} />
+      <hr />
+      <GeneralBody setForm={setForm} form={form} />
     </div>
   );
 };

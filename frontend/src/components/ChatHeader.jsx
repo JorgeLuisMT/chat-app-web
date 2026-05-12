@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import MenuButton from "./MenuButton";
+import ChatMenu from "./ChatMenu";
 
-const ChatHeader = ({ handleClickChatMenu }) => {
+const ChatHeader = () => {
+  const [isChatMenuOpen, setIsChatMenuOpen] = useState(false);
+
+  const handleClickChatMenu = () => setIsChatMenuOpen(!isChatMenuOpen);
   return (
     <div className="chat-header-container">
-      <div className="chat-name">Chat</div>
-      <MenuButton handleClickMenu={handleClickChatMenu} />
+      <div>
+        <div className="chat-name">
+          <p>Chat</p>
+        </div>
+        <div>
+          <MenuButton handleClickMenu={handleClickChatMenu} />
+        </div>
+      </div>
+
+      <ChatMenu
+        isChatMenuOpen={isChatMenuOpen}
+        handleClickChatMenu={handleClickChatMenu}
+      />
     </div>
   );
 };
