@@ -10,6 +10,7 @@
   background-color: #f6f4e8;
   padding: 2rem;
   transition: all 0.3s ease;
+  z-index: 999;
 }
 
 #chat-menu {

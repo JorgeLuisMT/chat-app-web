@@ -12,6 +12,7 @@
   display: flex;
   height: 10%;
   background: #ff61f8;
+  padding: 1.5rem 0;
   z-index: 999;
 }
 
@@ -38,7 +39,7 @@
 
 .chat-body-bg {
   position: relative;
-  flex: 1;
+  flex-grow: 1;
   min-height: 0;
   background-color: #fabff7;
 }
@@ -54,14 +55,36 @@
 
 .chat-body-container .msg-container {
   display: flex;
+  margin-top: 0.5rem;
 }
 
 .chat-body-container li {
   display: inline-block;
-  border-radius: 0.75rem;
+  max-width: 45%;
+  word-wrap: break-word;
   background-color: #f6f4e8;
   text-decoration: none;
   padding: 0.5rem;
+}
+
+.chat-body-container .normal-msg {
+  border-radius: 1rem;
+}
+
+.chat-body-container .top-msg {
+  border-radius: 1rem 1rem 0 1rem;
+}
+
+.chat-body-container .bottom-msg {
+  border-radius: 1rem 0 1rem 1rem;
+}
+
+.chat-body-container .receiver .top-msg {
+  border-radius: 1rem 1rem 1rem 0;
+}
+
+.chat-body-container .receiver .bottom-msg {
+  border-radius: 0 1rem 1rem 1rem;
 }
 
 .chat-body-container .sender {
@@ -91,3 +114,5 @@
   border-radius: 0 0.75rem 0.75rem 0;
   padding: 0.5rem;
 }
+
+/* chat messages */

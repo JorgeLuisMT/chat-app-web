@@ -20,6 +20,7 @@
 /* general body  */
 
 .general-body-container {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-grow: 1;
@@ -37,6 +38,19 @@
 .no-chats-container a {
   text-decoration: none;
   color: #ff61f8;
+}
+
+.add-chat {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 1rem;
+  border-radius: 50%;
+  background-color: #ff61f8;
+}
+
+.add-chat:hover {
+  cursor: pointer;
 }
 
 /* general header container */
