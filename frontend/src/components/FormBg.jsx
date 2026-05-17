@@ -15,7 +15,7 @@ let iconStyles = {
   ["z-index"]: "998",
 };
 
-export const AuthBg = ({ children }) => {
+export const FormBg = ({ children }) => {
   return (
     <div className="auth-bg">
       {children}

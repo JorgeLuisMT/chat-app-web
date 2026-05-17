@@ -8,37 +8,21 @@
   width: 100%;
 }
 
-.friends-label,
-.add-label {
+.persons-label {
   display: flex;
   gap: 0.75rem;
   padding: 0 5%;
 }
 
-.friends-label > small,
-.add-label > small {
+.persons-label > small {
   color: #bfc9d1;
 }
 
-.friends-label > hr,
-.add-label > hr {
+.persons-label > hr {
   height: 1px;
   flex-grow: 1;
   background-color: #bfc9d1;
   border: none;
-}
-
-.add-label {
-  margin-top: 0.5rem;
-}
-
-/* friends container */
-
-.friends-container {
-  padding: 0 1rem 1rem 1rem;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
 }
 
 /* persons container */

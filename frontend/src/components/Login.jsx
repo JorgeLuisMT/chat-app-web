@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useForm from "../hooks/useForm";
 import { Link } from "react-router-dom";
 import { validateLogin } from "../helpers/authValidations";
-import { AuthBg } from "./AuthBg";
+import { FormBg } from "./FormBg";
 import "../styles/Auth.css";
 
 const initForm = {
@@ -41,7 +41,7 @@ const Login = ({ setAuth }) => {
   };
 
   return (
-    <AuthBg>
+    <FormBg>
       <div id="login-container">
         <form id="login-form" onSubmit={handleSubmit}>
           <div>
@@ -102,7 +102,7 @@ const Login = ({ setAuth }) => {
           </div>
         </form>
       </div>
-    </AuthBg>
+    </FormBg>
   );
 };
 

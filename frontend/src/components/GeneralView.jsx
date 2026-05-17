@@ -10,13 +10,18 @@ const initForm = {
   "search-friends": "",
 };
 
-const GeneralView = () => {
+const GeneralView = ({ handleAddModalClick, friends }) => {
   const { form, setForm, handleChange } = useForm(initForm);
   return (
     <div className="general-view-container">
       <GeneralHeader handleChange={handleChange} form={form} />
       <hr />
-      <GeneralBody setForm={setForm} form={form} />
+      <GeneralBody
+        setForm={setForm}
+        form={form}
+        handleAddModalClick={handleAddModalClick}
+        friends={friends}
+      />
     </div>
   );
 };

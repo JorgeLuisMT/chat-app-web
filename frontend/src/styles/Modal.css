@@ -1,0 +1,94 @@
+.leave-modal-container,
+.add-modal-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+}
+
+.leave-modal-bg,
+.add-modal-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #bfc9d1;
+  opacity: 0.7;
+  z-index: 998;
+}
+
+.leave-modal-interaction,
+.add-modal-interaction {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #f6f4e8;
+  width: 50%;
+  padding: 1rem;
+  opacity: 1;
+  border-radius: 0.75rem;
+  z-index: 999;
+}
+
+.add-modal-interaction {
+  width: 66%;
+  height: 90%;
+}
+
+.leave-modal-options,
+.add-modal-options {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.leave-modal-options > *,
+.add-modal-options > * {
+  flex-grow: 1;
+  padding: 0.75rem;
+  color: #f6f4e8;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 0.75rem;
+}
+
+.leave-modal-options .modal-options-cancel {
+  background-color: #468432;
+}
+
+.leave-modal-options .modal-options-leave {
+  background-color: #e03f4f;
+}
+
+.add-modal-options .modal-options-cancel {
+  color: #ff61f8;
+}
+
+.add-modal-options .modal-options-add {
+  background-color: #ff61f8;
+}
+
+.modal-options-cancel:hover,
+.modal-options-leave:hover {
+  cursor: pointer;
+}
+
+/* cerate group modal */
+
+.add-modal-interaction form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.add-modal-interaction form input[type="text"] {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.75rem;
+}

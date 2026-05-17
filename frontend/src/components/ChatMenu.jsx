@@ -6,7 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ChatMenu = ({ isChatMenuOpen, handleClickChatMenu }) => {
+const ChatMenu = ({
+  isChatMenuOpen,
+  handleClickChatMenu,
+  setIsLeaveModalOpen,
+}) => {
+  const handleclick = (e) => {
+    e.preventDefault();
+    setIsLeaveModalOpen((isLeaveModalOpen) => !isLeaveModalOpen);
+    handleClickChatMenu();
+  };
   return (
     <nav
       id="chat-menu"
@@ -26,7 +35,7 @@ const ChatMenu = ({ isChatMenuOpen, handleClickChatMenu }) => {
           <li>Configuration</li>
         </Link>
         <Link to={"/add_friend"}>Add Friend</Link>
-        <Link className="leave" to={"/login"}>
+        <Link className="leave" onClick={handleclick}>
           <li>
             <FontAwesomeIcon icon={faArrowRightFromBracket} /> Leave
           </li>

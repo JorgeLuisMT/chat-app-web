@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import useForm from "../hooks/useForm";
 import { Link } from "react-router-dom";
 import { validateRegister } from "../helpers/authValidations";
-import { AuthBg } from "./AuthBg";
 import "../styles/Auth.css";
+import { FormBg } from "./formBg";
 
 const initForm = {
   user_name: "",
@@ -40,7 +40,7 @@ const Register = ({ setAuth }) => {
   };
 
   return (
-    <AuthBg>
+    <FormBg>
       <div id="register-container">
         <form id="register-form" onSubmit={handleSubmit}>
           <div>
@@ -87,7 +87,7 @@ const Register = ({ setAuth }) => {
           </div>
         </form>
       </div>
-    </AuthBg>
+    </FormBg>
   );
 };
 

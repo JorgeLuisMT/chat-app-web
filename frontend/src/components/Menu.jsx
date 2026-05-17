@@ -22,7 +22,7 @@ const Menu = ({ isGeneralMenuOpen, handleClickGeneralMenu }) => {
         </div>
       </div>
       <ul>
-        <Link to={"/configuration"}>
+        <Link to={"/user/configuration"}>
           <li>Configuration</li>
         </Link>
         <Link className="logout" to={"/login"}>

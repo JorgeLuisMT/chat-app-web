@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MenuButton from "./MenuButton";
 import ChatMenu from "./ChatMenu";
 
-const ChatHeader = () => {
+const ChatHeader = ({ setIsLeaveModalOpen }) => {
   const [isChatMenuOpen, setIsChatMenuOpen] = useState(false);
 
   const handleClickChatMenu = () => setIsChatMenuOpen(!isChatMenuOpen);
@@ -20,6 +20,7 @@ const ChatHeader = () => {
       <ChatMenu
         isChatMenuOpen={isChatMenuOpen}
         handleClickChatMenu={handleClickChatMenu}
+        setIsLeaveModalOpen={setIsLeaveModalOpen}
       />
     </div>
   );
