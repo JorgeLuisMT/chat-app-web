@@ -114,3 +114,29 @@
 .chat-config-form {
   height: 40%;
 }
+
+.chat-config-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+}
+
+.chat-config-options > * {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.chat-config-options > *:hover {
+  cursor: pointer;
+}
+
+.chat-config-options .config-options-cancel {
+  color: #ff61f8;
+}
+.chat-config-options .config-options-update {
+  background-color: #ff61f8;
+}

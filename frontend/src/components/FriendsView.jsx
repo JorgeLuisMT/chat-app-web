@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../styles/FriendsView.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FriendsContext } from "../context/friendsContext";
 
 let persons = [
   { user_name: "ñlsdj", user_id: "ñlkja" },
@@ -122,7 +123,8 @@ export const PersonsContainer = ({
   );
 };
 
-const FriendsView = ({ friends }) => {
+const FriendsView = () => {
+  const friends = useContext(FriendsContext);
   const [addToFriends, setAddToFriends] = useState([]);
   useEffect(() => {
     //console.log(addToFriends);

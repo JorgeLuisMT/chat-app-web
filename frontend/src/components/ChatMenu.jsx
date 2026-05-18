@@ -31,7 +31,7 @@ const ChatMenu = ({
         </div>
       </div>
       <ul>
-        <Link to={"/configuration"}>
+        <Link to={"/chat/lihlkjh/configuration"}>
           <li>Configuration</li>
         </Link>
         <Link to={"/add_friend"}>Add Friend</Link>

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FormBg } from "./FormBg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { PersonsContainer } from "./FriendsView";
+import { FriendsContext } from "../context/friendsContext";
 
-const ChatConfiguration = ({ friends }) => {
-  const [friendsOut, setFriendsOut] = useState(friends);
-
-  useEffect(() => {
-    console.log(friendsOut);
-  }, [friendsOut]);
+const ChatConfiguration = () => {
+  const friends = useContext(FriendsContext);
+  const [friendsInChat, setFriendsInChat] = useState(friends);
   return (
     <FormBg>
       <div className="chat-config-container">
@@ -36,10 +34,14 @@ const ChatConfiguration = ({ friends }) => {
         </form>
         <PersonsContainer
           title="Group members"
-          persons={friends}
+          persons={friendsInChat}
           cancel={true}
-          administerUsers={setFriendsOut}
+          administerUsers={setFriendsInChat}
         />
+        <div className="chat-config-options">
+          <div className="config-options-cancel">Cancel</div>
+          <div className="config-options-update">Update</div>
+        </div>
       </div>
     </FormBg>
   );

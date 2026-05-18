@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { PersonsContainer } from "./FriendsView";
+import { FriendsContext } from "../context/friendsContext";
 
-const AddModal = ({ handleAddModalClick, friends }) => {
+const AddModal = ({ handleAddModalClick }) => {
+  const friends = useContext(FriendsContext);
   const [friendsAddedToGroup, setFriendsAddedToGroup] = useState([]);
 
   const handleAdd = () => {
